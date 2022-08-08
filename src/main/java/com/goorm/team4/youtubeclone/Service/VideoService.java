@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -202,7 +204,29 @@ public class VideoService {
     }
 
     public List<VideoDto> searchVideoList(String query){
-        return videoRepository.findByTitleContainingIgnoreCase(query).stream().map(this::mapToVideoDto).collect(Collectors.toList());
+        String[] queryList=query.split(" ");
+        Set<Video> ret = new HashSet<Video>();
+        List<Video> temp = new ArrayList<>();
+        for(String qt: queryList){
+            temp = videoRepository.findByTagsIgnoreCaseAndVideoStatus(qt,"PUBLIC");
+            for(Video vt: temp) {
+                ret.add(vt);
+            }
+        }
+
+        for(String qt:queryList) {
+            System.out.println(qt);
+            temp = videoRepository.findByTitleContainingIgnoreCaseAndVideoStatus(qt, "PUBLIC");
+            for (Video vt : temp) {
+                ret.add(vt);
+            }
+        }
+
+
+
+        return ret.stream().map(this::mapToVideoDto).collect(Collectors.toList());
+        //return videoRepository.findByTitleContainingIgnoreCaseAndVideoStatus(query,"PUBLIC").stream().map(this::mapToVideoDto).collect(Collectors.toList());
+
     }
 
 }

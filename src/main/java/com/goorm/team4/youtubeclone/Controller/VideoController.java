@@ -96,8 +96,6 @@ public class VideoController {
     @GetMapping("/{query}/search")
     @ResponseStatus(HttpStatus.OK)
     public List<VideoDto> searchVideo(@PathVariable String query) {
-
-        System.out.println(query);
         return videoService.searchVideoList(query);
     }
 
