@@ -168,6 +168,19 @@ public class VideoService {
         System.out.println(commentList);
         videoRepository.save(video);
     }
+    public void deleteComment2(String videoId,int num){
+        Video video = getVideoById(videoId);
+        List<Comment> commentList = video.getCommentList();
+        Comment comment = commentList.get(commentList.size()-1);
+        String author = comment.getAuthorId();
+        if (author.equals(author)){
+            commentList.remove(num);
+        } else {
+            System.out.println("false");
+        }
+        System.out.println(commentList);
+        videoRepository.save(video);
+    }
 
     public List<CommentDto> getAllComments(String videoId) {
         Video video = getVideoById(videoId);

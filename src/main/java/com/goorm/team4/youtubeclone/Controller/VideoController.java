@@ -69,6 +69,14 @@ public class VideoController {
         videoService.addComment(videoId, commentDto);
     }
 
+
+    @DeleteMapping("/{videoId}/{num}/comment/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public void DeleteComment2(@PathVariable("videoId") String videoId,@PathVariable("num") int num) {
+        videoService.deleteComment2(videoId,num);
+    }
+
+
     @PostMapping("/{videoId}/comment/delete")
     @ResponseStatus(HttpStatus.OK)
     public void DeleteComment(@PathVariable String videoId) {
