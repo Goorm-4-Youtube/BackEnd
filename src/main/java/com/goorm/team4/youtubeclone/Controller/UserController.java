@@ -24,7 +24,7 @@ public class UserController {
     private final UserRegistrationService userRegistrationService;
 
     @GetMapping("/register")
-    public String register(Authentication authentication) {
+    public List<String> register(Authentication authentication) {
         Jwt jwt = (Jwt) authentication.getPrincipal();
         return userRegistrationService.registerUser(jwt.getTokenValue());
     }

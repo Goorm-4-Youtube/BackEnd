@@ -13,6 +13,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +26,7 @@ public class UserRegistrationService {
 
     private final UserRepository userRepository;
 
-    public String registerUser(String tokenValue) {
+    public List<String> registerUser(String tokenValue) {
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(userInfoEndpoint))
@@ -43,18 +45,19 @@ public class UserRegistrationService {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             UserInfoDTO userInfoDTO = objectMapper.readValue(body, UserInfoDTO.class);
 
-            Optional<User> userbySubject = userRepository.findBySub(userInfoDTO.getSub());
-            if(userbySubject.isPresent()){
-                return userbySubject.get().getId();
+            Optional<User> userBySubject = userRepository.findBySub(userInfoDTO.getSub());
+            if(userBySubject.isPresent()){
+                return Arrays.asList(userBySubject.get().getId(), userBySubject.get().getName());
             } else{
                 User user = new User();
-                user.setFirstName(userInfoDTO.getGivenName());
-                user.setLastName(userInfoDTO.getFamilyName());
-                user.setFullName(userInfoDTO.getName());
+                user.setNickName(userInfoDTO.getGivenName());
+                user.setName(userInfoDTO.getName());
                 user.setEmailAddress(userInfoDTO.getEmail());
                 user.setSub(userInfoDTO.getSub());
 
-                return userRepository.save(user).getId();
+                userRepository.save(user);
+
+                return Arrays.asList(user.getId(),user.getName());
             }
 
 
