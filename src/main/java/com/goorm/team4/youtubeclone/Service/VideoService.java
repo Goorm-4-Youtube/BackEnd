@@ -6,15 +6,13 @@ import com.goorm.team4.youtubeclone.dto.UploadVideoResponse;
 import com.goorm.team4.youtubeclone.dto.VideoDto;
 import com.goorm.team4.youtubeclone.model.Comment;
 import com.goorm.team4.youtubeclone.model.Video;
+import com.goorm.team4.youtubeclone.model.VideoStatus;
 import com.goorm.team4.youtubeclone.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,18 +26,21 @@ public class VideoService {
         String videoUrl = s3service.uploadFile(multipartFile);
         var video = new Video();
         video.setVideoUrl(videoUrl);
+        video.setVideoStatus(VideoStatus.PRIVATE);
+        video.setUserId(userService.getCurrentUser().getId());
+        video.setUserName(userService.getCurrentUser().getName());
 
         var savedVideo = videoRepository.save(video);
         return new UploadVideoResponse(savedVideo.getId(), savedVideo.getVideoUrl());
 
     }
+
     public VideoDto editVideo(VideoDto videoDto) {
     var savedVideo = getVideoById((videoDto.getId()));
     savedVideo.setTitle(videoDto.getTitle());
     savedVideo.setDescription(videoDto.getDescription());
     savedVideo.setTags(videoDto.getTags());
     savedVideo.setVideoStatus(videoDto.getVideoStatus());
-    savedVideo.setUserId(videoDto.getUserId());
 
     videoRepository.save(savedVideo);
     return videoDto;
@@ -134,6 +135,8 @@ public class VideoService {
         videoDto.setVideoUrl(videoById.getVideoUrl());
         videoDto.setThumbnailUrl(videoById.getThumbnailUrl());
         videoDto.setId(videoById.getId());
+        videoDto.setUserName(videoById.getUserName());
+        videoDto.setUserId(videoById.getUserId());
         videoDto.setTitle(videoById.getTitle());
         videoDto.setDescription(videoById.getDescription());
         videoDto.setTags(videoById.getTags());
@@ -186,6 +189,8 @@ public class VideoService {
         Video video = getVideoById(videoId);
         List<Comment> commentList = video.getCommentList();
 
+        Collections.reverse(commentList);
+
         return commentList.stream().map(this::mapToCommentDto).collect(Collectors.toList());
     }
 
@@ -234,9 +239,7 @@ public class VideoService {
                 ret.add(vt);
             }
         }
-
-
-
+        
         return ret.stream().map(this::mapToVideoDto).collect(Collectors.toList());
         //return videoRepository.findByTitleContainingIgnoreCaseAndVideoStatus(query,"PUBLIC").stream().map(this::mapToVideoDto).collect(Collectors.toList());
 
