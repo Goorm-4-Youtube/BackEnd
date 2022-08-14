@@ -20,9 +20,8 @@ public class User {
 
     @Id
     private String id;
-    private String firstName;
-    private String lastName;
-    private String fullName;
+    private String nickName;
+    private String name;
     private String emailAddress;
     private String sub;
     private Set<String> subscribedToUsers = ConcurrentHashMap.newKeySet();

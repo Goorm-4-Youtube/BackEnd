@@ -22,13 +22,16 @@ public class Video {
     private String title;
     private String description;
     private String userId;
+    private String userName;
+    private String videoUrl;
+    private String thumbnailUrl;
+
+    private VideoStatus videoStatus;
+
+    private Set<String> tags;
     private AtomicInteger likes = new AtomicInteger(0);
     private AtomicInteger disLikes = new AtomicInteger(0);
-    private Set<String> tags;
-    private String videoUrl;
-    private VideoStatus videoStatus;
     private AtomicInteger viewCount = new AtomicInteger(0);
-    private String thumbnailUrl;
     private List<Comment> commentList = new CopyOnWriteArrayList<>();
 
     public void incrementLikes() {

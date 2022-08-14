@@ -20,13 +20,18 @@ public class VideoDto {
     private String title;
     private String description;
     private String userId;
+    private String userName;
+    private String videoUrl;
+    private String thumbnailUrl;
+
+    private Set<String> tags;
+
     private Integer likeCount;
     private Integer dislikeCount;
-    private Set<String> tags;
-    private String videoUrl;
-    private VideoStatus videoStatus;
     private Integer viewCount;
-    private String thumbnailUrl;
+
+    private VideoStatus videoStatus;
+
     private List<Comment> commentList;
 
 }
