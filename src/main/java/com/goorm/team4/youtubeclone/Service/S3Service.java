@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,7 +20,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class S3Service implements FileService{
 
-    public static final String BUCKET_NAME = "goorm4-video";
+    @Value("${cloud.aws.bucketname}")
+    public String BUCKET_NAME;
     private final AmazonS3Client awsS3Client;
 
     @Override
