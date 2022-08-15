@@ -47,8 +47,9 @@ pipeline {
             sh "git commit -m '[backend] image versioning v$BUILD_NUMBER '"
             sshagent(credentials('github')) {
                 sh "git push -u origin master"
-          }
+          	}
+	}
       } 
 	  
+   }
   }
-    }
