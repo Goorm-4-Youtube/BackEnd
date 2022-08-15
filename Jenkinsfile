@@ -44,7 +44,7 @@ pipeline {
 			  sh "cd /var/jenkins_home/workspace/Manifest/"
             sh "git add ."
             sh "git commit -m '[backend] image versioning v$BUILD_NUMBER '"
-            sshagent(credentials : ['github']) {
+            sshagent(credentials : ['github2']) {
 		sh "git remote set-url origin git@github.com:Goorm-4-Youtube/Manifest.git"
                 sh "git push -u origin master"
           	}
