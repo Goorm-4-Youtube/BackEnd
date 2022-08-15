@@ -15,7 +15,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public boolean isLoggedin(){
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal()=="anonymousUser" ? false: true;
+    }
+
     public User getCurrentUser() {
+        if (isLoggedin())
+            return null;
+
         String sub = ((Jwt) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getClaim("sub");
 
         return userRepository.findBySub(sub)
@@ -56,6 +63,8 @@ public class UserService {
 
     public void addVideoToHistory(String videoId) {
         User currentUser = getCurrentUser();
+        if (currentUser==null)
+            return;
         currentUser.addToVideoHistory(videoId);
         userRepository.save(currentUser);
     }
