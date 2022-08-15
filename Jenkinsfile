@@ -40,9 +40,8 @@ pipeline {
       stage('Manifest Update') { 
 		  steps { 
                       checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Goorm-4-Youtube/Manifest.git']]]
-			  sh "cd backend"
-			  sh "sed -i 's/backend:v.*/backend:v$BUILD_NUMBER/' ./deployment.yaml  "
-			  sh "cd .."
+			  sh "sed -i 's/backend:v.*/backend:v$BUILD_NUMBER/' /var/jenkins_home/workspace/Manifest/backend/deployment.yaml  "
+			  sh "cd /var/jenkins_home/workspace/Manifest/"
             sh "git add ."
             sh "git commit -m '[backend] image versioning v$BUILD_NUMBER '"
             sshagent(credentials('github')) {
