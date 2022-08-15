@@ -20,7 +20,7 @@ public class UserService {
     }
 
     public User getCurrentUser() {
-        if (isLoggedin())
+        if (!isLoggedin())
             return null;
 
         String sub = ((Jwt) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getClaim("sub");
