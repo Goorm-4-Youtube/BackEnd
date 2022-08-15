@@ -36,6 +36,19 @@ pipeline {
 		  steps { 
               sh "docker rmi $repository:v$BUILD_NUMBER" // docker image remove
           }
+      }
+      stage('Manifest Update') { 
+		  steps { 
+                      checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Goorm-4-Youtube/Manifest.git']]]
+			  sh "cd backend"
+			  sh "sed -i 's/backend:v.*/backend:v$BUILD_NUMBER/' ./deployment.yaml  "
+			  sh "cd .."
+            sh "git add ."
+            sh "git commit -m '[backend] image versioning v$BUILD_NUMBER '"
+            sshagent(credentials: ['{github}']) {
+                sh "git push -u origin master"
+          }
       } 
+	  
   }
     }
