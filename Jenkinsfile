@@ -45,6 +45,7 @@ pipeline {
             sh "git add ."
             sh "git commit -m '[backend] image versioning v$BUILD_NUMBER '"
             sshagent(credentials : ['github']) {
+		sh "git remote set-url origin git@github.com:Goorm-4-Youtube/Manifest.git"
                 sh "git push -u origin master"
           	}
 	}
