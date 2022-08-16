@@ -25,15 +25,13 @@ public class SecurityConfig{
     private String audience;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+        http.cors()
                 .and()
                 .authorizeRequests().antMatchers("/api/videos/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .cors()
                 .and()
                 .cors(Customizer.withDefaults())
                 .oauth2ResourceServer()

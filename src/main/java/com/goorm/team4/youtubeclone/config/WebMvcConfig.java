@@ -20,6 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .maxAge(3600);
     }
 
+    /**
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
@@ -32,4 +33,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         source.registerCorsConfiguration("/**",configuration);
         return source;
     }
+    */
 }
