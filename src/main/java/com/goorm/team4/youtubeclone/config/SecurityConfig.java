@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +25,9 @@ public class SecurityConfig{
     private String audience;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.cors()
+        http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .and()
+                .cors()
                 .and()
                 .authorizeRequests().antMatchers("/api/videos/**").permitAll()
                 .anyRequest().authenticated()
