@@ -152,6 +152,7 @@ public class VideoService {
         Comment comment = new Comment();
         comment.setText(commentDto.getCommentText());
         comment.setAuthorId(commentDto.getAuthorId());
+        comment.setAuthorName(commentDto.getAuthorName());
         video.addComment(comment);
 
         videoRepository.save(video);
@@ -174,6 +175,7 @@ public class VideoService {
     public void deleteComment2(String videoId,int num){
         Video video = getVideoById(videoId);
         List<Comment> commentList = video.getCommentList();
+        Collections.reverse(commentList);
         Comment comment = commentList.get(commentList.size()-1);
         String author = comment.getAuthorId();
         if (author.equals(author)){
@@ -198,6 +200,7 @@ public class VideoService {
         CommentDto commentDto = new CommentDto();
         commentDto.setCommentText(comment.getText());
         commentDto.setAuthorId(comment.getAuthorId());
+        commentDto.setAuthorName(comment.getAuthorName());
         return commentDto;
     }
 
