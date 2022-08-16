@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin(allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/videos")
 @RequiredArgsConstructor
